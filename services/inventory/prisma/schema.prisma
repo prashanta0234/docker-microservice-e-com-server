@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Category {
+  c_id   String   @id @default(uuid()) @db.Uuid
+  c_name String   @db.VarChar(255)
+  products Product[]
+}
+
+model Product {
+  p_id          String   @id @default(uuid()) @db.Uuid
+  p_name        String   @db.VarChar(255)
+  p_description String   @db.Text
+  p_price       Decimal  @db.Decimal(5, 2)
+
+  c_id          String?  @db.Uuid
+  p_images      String[] @db.Text
+  category      Category? @relation(fields: [c_id], references: [c_id], onDelete: Cascade)
+  inventory     Inventory?
+}
+
+model Inventory {
+  i_id     String  @id @default(uuid()) @db.Uuid
+  p_amount Int     
+  p_id     String? @db.Uuid @unique
+  product  Product? @relation(fields: [p_id], references: [p_id], onDelete: Cascade)
+}
+
