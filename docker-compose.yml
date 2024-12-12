@@ -1,0 +1,45 @@
+services:
+  products:
+    image: node
+    container_name: products-services
+    build:
+      context: ./services/products
+    networks:
+      - ecom-micro
+
+  inventory:
+    image: node
+    container_name: inventory-services
+    build:
+      context: ./services/inventory
+    ports:
+      - 5000:5001
+    networks:
+      - ecom-micro
+
+  postgress:
+    image: postgres
+    restart: on-failure
+    container_name: postgress-database
+    environment:
+      POSTGRES_USER: shanto
+      POSTGRES_PASSWORD: shanto_pass
+      POSTGRES_DB: e-com-db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  db-adminer:
+    image: adminer
+    restart: on-failure
+    ports:
+      - 8080:8080
+
+volumes:
+  postgres_data:
+
+networks:
+  ecom-micro:
+    name: ecom-micro
+    driver: bridge
