@@ -34,7 +34,18 @@ services:
     image: adminer
     restart: on-failure
     ports:
-      - 8080:8080
+      - 8050:8050
+
+  key-clock:
+    image: keycloak/keycloak
+    restart: on-failure
+    container_name: keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: start-dev
 
 volumes:
   postgres_data:
