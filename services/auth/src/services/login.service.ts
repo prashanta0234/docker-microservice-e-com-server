@@ -8,7 +8,7 @@ const LoginService = async (data: LoginDataType) => {
 		throw new Error("Keycloak client ID or secret is not configured.");
 	}
 	const response = await axios.post(
-		`http://localhost:8080/realms/e-com-micro/protocol/openid-connect/token`,
+		`${process.env.KEYCLOAK_BASE_URL}/realms/${process.env.KEYCLOAK_REALM}/protocol/openid-connect/token`,
 		new URLSearchParams({
 			grant_type: "password",
 			client_id: process.env.KEYCLOAK_CLIENT_ID,
@@ -19,7 +19,7 @@ const LoginService = async (data: LoginDataType) => {
 		{ headers: { "Content-Type": "application/x-www-form-urlencoded" } }
 	);
 
-	return response;
+	return response.data;
 };
 
 export default LoginService;

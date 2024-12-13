@@ -27,7 +27,12 @@ export const GlobalErrorHandler: ErrorRequestHandler = (err, _, res, __) => {
 	if (err.status === 409) {
 		message = "You already have an account";
 		err =
-			"Your email already registered in our site. PLease use another email.";
+			"Your email already registered in our site. Please use another email.";
+	}
+	if (err.status === 404) {
+		message = "Your email not found";
+		err =
+			"Your email is not registered in our site. Please make a registration first.";
 	}
 
 	if (err.name === "TokenExpiredError") {
